@@ -1,3 +1,4 @@
+#Площадь квадрата
 import math
 
 def square(stor):
