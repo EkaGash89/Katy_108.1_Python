@@ -7,7 +7,7 @@ import time
 
 driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))
 
-driver.get("http://the-internet.herokuapp.com/login")
+driver.get("http://the-internet.herokuapp.com/inputs.")
 
 input_field = driver.find_element(By.TAG_NAME, "input")
 
