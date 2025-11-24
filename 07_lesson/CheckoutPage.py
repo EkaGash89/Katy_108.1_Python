@@ -14,9 +14,18 @@ class CheckoutPage:
     CONTINUE_BUTTON = (By.ID, "continue")
     TOTAL_LABEL = (By.CLASS_NAME, "summary_total_label")
     FINISH_BUTTON = (By.ID, "finish")
+    CHECKOUT_INFO = (By.CLASS_NAME, "checkout_info")
+    SUMMARY_INFO = (By.CLASS_NAME, "summary_info")
+
+    def wait_for_form_load(self):
+        self.wait.until(EC.presence_of_element_located(self.CHECKOUT_INFO))
+        return self
+    
+    def wait_for_summary_load(self):
+        self.wait.until(EC.presence_of_element_located(self.SUMMARY_INFO))
+        return self
     
     def fill_checkout_form(self, first_name, last_name, postal_code):
-        # Используем presence_of_element_located вместо element_to_be_clickable
         first_name_field = self.wait.until(EC.presence_of_element_located(self.FIRST_NAME_INPUT))
         first_name_field.clear()
         first_name_field.send_keys(first_name)

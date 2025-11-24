@@ -12,6 +12,11 @@ class CartPage:
     CHECKOUT_BUTTON = (By.ID, "checkout")
     CART_ITEMS = (By.CLASS_NAME, "cart_item")
     ITEM_NAMES = (By.CLASS_NAME, "inventory_item_name")
+    CART_LIST = (By.CLASS_NAME, "cart_list")
+
+    def wait_for_page_load(self):
+        self.wait.until(EC.presence_of_element_located(self.CART_LIST))
+        return self
     
     def click_checkout(self):
         checkout_btn = self.wait.until(EC.element_to_be_clickable(self.CHECKOUT_BUTTON))

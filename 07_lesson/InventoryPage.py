@@ -14,6 +14,11 @@ class InventoryPage:
     ONESIE_ADD_BUTTON = (By.ID, "add-to-cart-sauce-labs-onesie")
     CART_BUTTON = (By.CLASS_NAME, "shopping_cart_link")
     CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
+    INVENTORY_LIST = (By.CLASS_NAME, "inventory_list")
+
+    def wait_for_page_load(self):
+        self.wait.until(EC.presence_of_element_located(self.INVENTORY_LIST))
+        return self
     
     def add_backpack_to_cart(self):
         add_button = self.wait.until(EC.element_to_be_clickable(self.BACKPACK_ADD_BUTTON))

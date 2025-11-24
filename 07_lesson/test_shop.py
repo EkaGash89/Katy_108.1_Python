@@ -2,8 +2,6 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from LoginPage import LoginPage
 
 @pytest.fixture
@@ -27,39 +25,40 @@ def test_saucedemo_purchase_robust(driver):
     # Создаем экземпляры страниц
     login_page = LoginPage(driver)
     login_page.open()
-    
+
     # Авторизация
     inventory_page = (login_page
                      .enter_username(username)
                      .enter_password(password)
                      .click_login())
     
-    # Явное ожидание загрузки страницы товаров
-    inventory_page.wait.until(EC.presence_of_element_located((By.CLASS_NAME, "inventory_list")))
+    # Ожидание загрузки страницы товаров
+    inventory_page.wait_for_page_load()
     
     # Добавление товаров в корзину
     inventory_page.add_backpack_to_cart()
     inventory_page.add_bolt_tshirt_to_cart()
     inventory_page.add_onesie_to_cart()
+
+    # Проверка количества товаров в корзине
+    cart_count = inventory_page.get_cart_items_count()
+    assert cart_count == 3, f"Expected 3 items in cart, but got {cart_count}"
     
     # Переход в корзину
     cart_page = inventory_page.go_to_cart()
-    
-    # Ожидание загрузки корзины
-    cart_page.wait.until(EC.presence_of_element_located((By.CLASS_NAME, "cart_list")))
+    cart_page.wait_for_page_load()
     
     # Переход к оформлению заказа
     checkout_page = cart_page.click_checkout()
+    checkout_page.wait_for_form_load()
     
-    # Ожидание появления формы
-    checkout_page.wait.until(EC.presence_of_element_located((By.CLASS_NAME, "checkout_info")))
-    
-    # Заполнение формы
-    checkout_page.fill_checkout_form(first_name, last_name, postal_code)
-    checkout_page.click_continue()
+    # Заполнение формы и переход к итогам
+    (checkout_page
+     .fill_checkout_form(first_name, last_name, postal_code)
+     .click_continue())
     
     # Ожидание загрузки страницы с итогами
-    checkout_page.wait.until(EC.presence_of_element_located((By.CLASS_NAME, "summary_info")))
+    checkout_page.wait_for_summary_load()
     
     # Проверка итоговой суммы
     actual_total = checkout_page.get_total_price()
