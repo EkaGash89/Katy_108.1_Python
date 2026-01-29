@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine 
 from sqlalchemy import create_engine, text
 
+
 db_connection_string = "postgresql://postgres:6010@localhost:5432/postgres"
 db = create_engine(db_connection_string)
 
