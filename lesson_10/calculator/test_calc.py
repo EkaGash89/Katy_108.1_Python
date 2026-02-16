@@ -5,7 +5,6 @@ from calc_page import CalculatorPage
 from typing import Any
 import allure
 
-
 @pytest.fixture
 def driver() -> Any:
     """
